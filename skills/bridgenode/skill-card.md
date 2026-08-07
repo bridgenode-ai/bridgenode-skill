@@ -1,6 +1,6 @@
 ## Description:
 
-Use BridgeNode for paid AI inference — OpenAI-compatible LLM chat completions and MCP access — without API keys, registration, or subscriptions. Pay per request with Solana USDC via the x402 (HTTP 402) micropayment protocol; BridgeNode sponsors transaction fees so agents only need USDC. Use when an agent needs LLM inference but has no provider API key, has a Solana USDC wallet, or prefers deterministic pay-per-request pricing over subscriptions.
+BridgeNode — anonymous pay-per-request LLM inference for agents. OpenAI-compatible endpoint + MCP access. No API keys. No registration. No subscriptions. No data collection — every request anonymous, nothing stored. Pay per request in Solana USDC via x402 (HTTP 402); fees sponsored, agents need only USDC. Use when an agent has no provider API key, holds Solana USDC, or wants deterministic privacy-preserving pay-per-request pricing.
 
 This skill is ready for commercial/non-commercial use.
 
