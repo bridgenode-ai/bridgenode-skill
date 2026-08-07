@@ -1,7 +1,7 @@
 {
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "name": "BridgeNode",
-  "description": "AI inference (DeepSeek V4 Flash) via x402 payments on Solana. OpenAI-compatible endpoint, MCP server. Pay per request with USDC, no registration, no API keys.",
+  "description": "AI inference bridge — pay per request with Solana USDC via x402. No API keys, no registration.",
   "services": [
     {
       "name": "MCP",
