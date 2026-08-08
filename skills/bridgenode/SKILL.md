@@ -81,7 +81,7 @@ curl https://bridgenode.cc/v1/chat/completions \
 
 Response: `402` with `PAYMENT-REQUIRED` header (amount, payTo, memo).
 
-Step 2 — sign the partial transaction with an x402-capable client (e.g. `x402curl`, official SDK, or `pay` CLI) and retry:
+Step 2 — sign the partial transaction with an x402-capable client (e.g. `x402-proxy` (npx x402-proxy), official SDK, or `pay` CLI) and retry:
 
 ```bash
 curl https://bridgenode.cc/v1/chat/completions \
