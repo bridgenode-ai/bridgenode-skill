@@ -40,10 +40,18 @@ Prices are in USDC per token (6 decimals). Always fetch live prices from `GET /v
 | Model | Input / token | Output / token | Context window | Max output |
 |---|---|---|---|---|
 | `deepseek-v4-flash` | $0.00000020 | $0.00000040 | 1,048,576 | 8,192 |
+| `deepseek-v4-pro` | $0.00000050 | $0.00000100 | 1,048,576 | 8,192 |
 | `groq-llama-3.3-70b` | $0.00000079 | $0.00000099 | 131,072 | 32,768 |
-| `deepseek-v4-pro` | $0.00000085 | $0.00000170 | 1,048,576 | 8,192 |
 
 Pricing model: **exact scheme** — the agent pays for `input tokens + max_tokens` **before** processing. If the model generates fewer than `max_tokens`, the agent still pays for `max_tokens` (this is the business model, not a bug). Minimum charge per request: 2000 atomic units = $0.002 USDC.
+
+## Reasoning Models — Important
+
+- Thinking/reasoning models generate **reasoning tokens that SHARE the `max_tokens` budget** with the answer.
+- Use `max_tokens >= 200` — a too-small limit can be fully consumed by reasoning, producing an **EMPTY answer** (the model returned 200 with no content).
+- **An empty answer is NOT refunded** — the service was provided (the provider returned 200). Increase `max_tokens` and purchase again.
+- Prefer `stream: true` for long generations (non-stream is capped at 4096).
+- If you use tools with a thinking model: you MUST return `reasoning_content` in the next turn, otherwise the API returns 400.
 
 ## Payment Flow (x402 V2, exact scheme)
 
