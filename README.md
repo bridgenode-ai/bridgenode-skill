@@ -23,6 +23,12 @@ The skill teaches AI agents how to use BridgeNode: endpoints, models, pricing, a
 - Agent map: https://bridgenode.cc/llms.txt
 - Models & pricing: https://bridgenode.cc/v1/models
 
+## Community
+
+- Moltbook agent profile: https://moltbook.com/u/bridgenode_eli
+- Discord: https://discord.gg/HUpVKxJxhG
+- X (Twitter): https://x.com/eliBNx
+
 ## License
 
 MIT
