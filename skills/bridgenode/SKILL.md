@@ -1,6 +1,6 @@
 ---
 name: bridgenode
-description: BridgeNode — anonymous pay-per-request LLM inference for AI agents. OpenAI-compatible endpoint + MCP access. No API keys, registration, or subscriptions; no data collection — nothing stored. Accepts Solana USDC micropayments via x402 (HTTP 402); fees sponsored, agents need only USDC. Use when an agent lacks a provider API key or wants privacy-preserving pay-per-request pricing.
+description: BridgeNode — anonymous pay-per-request LLM inference for AI agents. OpenAI-compatible endpoint + MCP access. No API keys, registration, or subscriptions; no accounts, no personal data. Accepts Solana USDC micropayments via x402 (HTTP 402); fees sponsored, agents need only USDC. Use when an agent lacks a provider API key or wants privacy-preserving pay-per-request pricing.
 metadata:
   author: BridgeNode
   version: "1.0.0"
@@ -59,7 +59,7 @@ Pricing model: **exact scheme** — the agent pays for `input tokens + max_token
 2. Server responds `402 Payment Required` with a `PAYMENT-REQUIRED` header (base64 JSON): price, `payTo` address, USDC mint, memo, recent blockhash.
 3. Agent constructs a **partial transaction**: USDC `TransferChecked` (amount = required) + Memo instruction, signs with its own wallet. Fee payer is NOT signed by the agent.
 4. Agent retries the request with `PAYMENT-SIGNATURE` header (base64 JSON payload with the signed transaction).
-5. Server verifies, settles on-chain (fee payer = BridgeNode, gasless for the agent), then processes the request.
+5. Server verifies the payment and processes the request (fees sponsored — gasless for the agent).
 6. Response is `200` with `PAYMENT-RESPONSE` header (settlement receipt).
 
 Key details:
