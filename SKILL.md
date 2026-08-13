@@ -110,6 +110,14 @@ Response: `200` with the completion and `PAYMENT-RESPONSE` header.
 
 Use the official `x402` Python client (`x402[svm]`) configured with the agent's Solana keypair; point it at `https://bridgenode.cc/v1/chat/completions`. Payment is automatic.
 
+## SDKs
+
+- **Python SDK:** `pip install bridgenode-llm` (https://pypi.org/project/bridgenode-llm) — full toolkit: `pip install bridgenode`
+- **CLI:** `pip install bridgenode-cli` (https://pypi.org/project/bridgenode-cli) — `bridgenode chat "Hello!"`
+- **TypeScript SDK:** `npm i @bridgenode/llm` (https://www.npmjs.com/package/@bridgenode/llm)
+
+All SDKs handle the x402 payment handshake automatically (402 → sign → retry → 200), with fail-closed spending limits (`BRIDGENODE_MAX_PER_CALL`, `BRIDGENODE_DAILY_CAP`).
+
 ## MCP Usage
 
 - Server URL: `https://bridgenode.cc/mcp` (streamable-http)
