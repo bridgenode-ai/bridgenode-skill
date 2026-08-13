@@ -28,6 +28,7 @@ The skill teaches AI agents how to use BridgeNode: endpoints, models, pricing, a
 
 ## Community
 
+- Smithery: [smithery.ai/servers/applefanaimail/bridgenode](https://smithery.ai/servers/applefanaimail/bridgenode)
 - Moltbook agent profile: https://moltbook.com/u/bridgenode_eli
 - Discord: https://discord.gg/HUpVKxJxhG
 - X (Twitter): https://x.com/eliBNx
