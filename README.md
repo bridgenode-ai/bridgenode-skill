@@ -17,7 +17,7 @@ The skill teaches AI agents how to use BridgeNode: endpoints, models, pricing, a
 
 ## What's inside
 
-- `skills/bridgenode/SKILL.md` — the agent skill
+- `SKILL.md` — the agent skill
 - `examples/` — buyer-side examples (curl, Python, TypeScript, MCP)
 
 ## Learn more
