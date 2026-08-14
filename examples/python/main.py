@@ -1,9 +1,9 @@
 """BridgeNode x402 Python example — pay per request with Solana USDC.
 
-Buyer-side example using the official x402 Python SDK (x402[svm]).
+Buyer-side example using the official x402 Python SDK (x402[svm,httpx]).
 
 Setup:
-    pip install "x402[svm]" python-dotenv
+    pip install "x402[svm,httpx]" python-dotenv
     cp .env.example .env   # fill SVM_PRIVATE_KEY
 
 Run:

@@ -14,7 +14,7 @@ public BridgeNode endpoint (`https://bridgenode.cc/v1`). No server code.
 | Example | Stack | What it shows |
 |---|---|---|
 | [curl/](curl/README.md) | curl + x402curl | Manual x402 flow: request → 402 → sign → retry |
-| [python/](python/README.md) | Python + `x402[svm]` | OpenAI-compatible call with automatic payment |
+| [python/](python/README.md) | Python + `x402[svm,httpx]` | OpenAI-compatible call with automatic payment |
 | [typescript/](typescript/README.md) | TypeScript + `@x402/svm` | Fetch wrapper with automatic payment |
 | [mcp/](mcp/README.md) | MCP client | Paid tool call through the BridgeNode MCP server |
 

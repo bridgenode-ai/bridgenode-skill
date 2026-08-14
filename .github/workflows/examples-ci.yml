@@ -27,7 +27,7 @@ jobs:
         run: python -m py_compile examples/python/main.py
 
       - name: Python — install buyer deps
-        run: pip install "x402[svm]" python-dotenv
+        run: pip install "x402[svm,httpx]" python-dotenv
 
       - name: Python — missing-key guardrail (fail-closed)
         run: |

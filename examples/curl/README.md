@@ -25,7 +25,7 @@ USDC `TransferChecked` (amount from the 402) + Memo instruction, signed with
 the agent's Solana keypair. The fee payer is NOT signed by the agent —
 BridgeNode sponsors gas.
 
-Use any x402-capable signer: `x402curl`, the official SDKs (`x402[svm]`,
+Use any x402-capable signer: `x402curl`, the official SDKs (`x402[svm,httpx]`,
 `@x402/svm`), or the Solana `pay` CLI. This produces a base64 JSON payload
 (`x402Version`, `resource`, `accepted`, `payload.transaction`).
 
@@ -78,7 +78,7 @@ payment-response: <base64 JSON — SettlementResponse: success, payer, transacti
 - **`402` instead of `200`** — expected on the first request; that is the payment challenge, not an error.
 - **`400 Bad request`** — unknown model, invalid body, or `max_tokens` above the non-stream cap (use `stream: true` for long generations).
 - **`503 Service busy`** — retry with backoff.
-- **Signing fails** — use `x402curl`, the official SDKs (`x402[svm]`, `@x402/svm`), or the Solana `pay` CLI; the fee payer is NOT signed by the agent.
+- **Signing fails** — use `x402curl`, the official SDKs (`x402[svm,httpx]`, `@x402/svm`), or the Solana `pay` CLI; the fee payer is NOT signed by the agent.
 - **Empty answer from reasoning models** — use `max_tokens >= 200`.
 
 ## Notes

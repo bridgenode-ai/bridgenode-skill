@@ -1,12 +1,12 @@
 # BridgeNode Python example
 
 Buyer-side example: AI agent pays for and calls BridgeNode with the official
-x402 Python SDK (`x402[svm]`).
+x402 Python SDK (`x402[svm,httpx]`).
 
 ## Setup
 
 ```bash
-pip install "x402[svm]" python-dotenv
+pip install "x402[svm,httpx]" python-dotenv
 cp .env.example .env
 # fill SVM_PRIVATE_KEY (agent's Solana keypair, must have USDC ATA)
 ```
