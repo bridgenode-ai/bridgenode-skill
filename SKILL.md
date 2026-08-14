@@ -17,6 +17,11 @@ compatibility: Any OpenAI-compatible agent with x402 payment support; MCP client
 
 # BridgeNode
 
+## Overview (natural language)
+
+BridgeNode is an AI inference service for agents: anonymous LLM access without API keys, without registration, without subscriptions. Agents get an OpenAI-compatible chat completions endpoint and pay as they go with Solana USDC micropayments via the x402 payment protocol (HTTP 402). Model prices are published per token on the public models endpoint; transaction fees are sponsored, so an agent only needs USDC in its own wallet. Works with any OpenAI-compatible agent, MCP clients, and x402-capable SDKs.
+
+
 ## ⚠️ Cost Warning (read first)
 
 This skill **spends real money (USDC)** on every request via on-chain Solana USDC micropayments (x402). There are no refunds once the provider has responded. Check live prices at `GET /v1/models` before use, set `max_tokens` to control cost, and use client-side spending limits (`BRIDGENODE_MAX_PER_CALL`, `BRIDGENODE_DAILY_CAP`) if available.
