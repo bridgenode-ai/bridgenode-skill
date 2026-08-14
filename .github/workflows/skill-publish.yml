@@ -6,6 +6,10 @@ on:
     paths: ['SKILL.md']
   workflow_dispatch:
 
+concurrency:
+  group: publish-skill
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
