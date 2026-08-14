@@ -6,6 +6,7 @@
 [![License: MIT-0](https://img.shields.io/badge/License-MIT--0-yellow.svg)](https://opensource.org/license/mit-0/)
 [![BridgeNode on x402-list](https://x402-list.com/badge/bridgenode.svg)](https://x402-list.com/services/bridgenode?utm_source=badge&utm_medium=referral&utm_campaign=embed)
 [![BridgeNode uptime on x402-list](https://x402-list.com/badge/bridgenode.svg?data=uptime)](https://x402-list.com/services/bridgenode?utm_source=badge&utm_medium=referral&utm_campaign=embed)
+[![BridgeNode on ClawHub](https://img.shields.io/badge/ClawHub-Skill-blue)](https://clawhub.ai/bridgenode/skills/bridgenode)
 
 Agent skill and buyer-side examples for [BridgeNode](https://bridgenode.cc) — AI inference bridge for AI agents. Pay per request with Solana USDC via [x402](https://docs.x402.org). No API keys, no registration.
 
