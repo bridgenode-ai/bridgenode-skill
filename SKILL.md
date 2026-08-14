@@ -129,6 +129,7 @@ Use the official `x402` Python client (`x402[svm]`) configured with the agent's 
 - **Python SDK:** `pip install bridgenode-llm` (https://pypi.org/project/bridgenode-llm) — full toolkit: `pip install bridgenode`
 - **CLI:** `pip install bridgenode-cli` (https://pypi.org/project/bridgenode-cli) — `bridgenode chat "Hello!"`
 - **TypeScript SDK:** `npm i @bridgenode/llm` (https://www.npmjs.com/package/@bridgenode/llm)
+- **MCP wrapper:** `npm i @bridgenode/mcp` (https://www.npmjs.com/package/@bridgenode/mcp)
 
 All SDKs handle the x402 payment handshake automatically (402 → sign → retry → 200), with fail-closed spending limits (`BRIDGENODE_MAX_PER_CALL`, `BRIDGENODE_DAILY_CAP`).
 
@@ -162,5 +163,6 @@ All errors use the OpenAI error format: `{"error": {"message": ..., "type": ...,
 
 - Discovery: `https://bridgenode.cc/.well-known/agent-card.json`, `/.well-known/mcp.json`, `/.well-known/ai-manifest.json`
 - Listed on x402-list: https://x402-list.com/services/bridgenode
+- ClawHub skill: https://clawhub.ai/bridgenode/skills/bridgenode
 - Transaction fees are sponsored (gasless) — the agent only needs USDC in its own wallet.
 - Refunds: if the provider fails before any content is delivered, the payment is refunded automatically (reverse USDC transfer).
