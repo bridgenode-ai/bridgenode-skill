@@ -3,15 +3,19 @@ name: Publish Skill to ClawHub
 on:
   push:
     branches: [main]
-    paths: ['SKILL.md', '.github/workflows/skill-publish.yml']
+    paths: ['SKILL.md']
   workflow_dispatch:
 
 jobs:
   publish:
-    uses: openclaw/clawhub/.github/workflows/skill-publish.yml@main
-    with:
-      skill_path: "."
-      dry_run: false
-      owner: bridgenode
-    secrets:
-      clawhub_token: ${{ secrets.CLAWHUB_TOKEN }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm i -g clawhub
+      - run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
+      - run: clawhub skill publish . --slug bridgenode --owner bridgenode --categories finance,integrations --topics x402,solana,usdc,mcp,llm
