@@ -11,6 +11,7 @@ metadata:
   currency: USDC
   openclaw:
     emoji: "⚡"
+    homepage: https://bridgenode.cc
 compatibility: Any OpenAI-compatible agent with x402 payment support; MCP clients (streamable-http)
 ---
 
@@ -152,6 +153,7 @@ All SDKs handle the x402 payment handshake automatically (402 → sign → retry
 All errors use the OpenAI error format: `{"error": {"message": ..., "type": ..., "code": ...}}`.
 
 ## Notes
+- Security: ClawHub security audit Pass; VirusTotal scan clean (no engine findings).
 
 - Discovery: `https://bridgenode.cc/.well-known/agent-card.json`, `/.well-known/mcp.json`, `/.well-known/ai-manifest.json`
 - Listed on x402-list: https://x402-list.com/services/bridgenode
