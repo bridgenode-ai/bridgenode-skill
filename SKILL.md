@@ -1,10 +1,10 @@
 ---
 name: bridgenode
-version: 1.0.9
+version: 1.0.10
 description: BridgeNode — anonymous pay-per-request LLM inference for AI agents. OpenAI-compatible endpoint + MCP access. No API keys, registration, or subscriptions; no accounts, no personal data. Accepts Solana USDC micropayments via x402 (HTTP 402); fees sponsored, agents need only USDC. Use when an agent lacks a provider API key or wants privacy-preserving pay-per-request pricing.
 metadata:
   author: BridgeNode
-  version: "1.0.9"
+  version: "1.0.10"
   url: https://bridgenode.cc
   repository: https://github.com/applefanaimail-blip/bridgenode-skill
   network: solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp
@@ -15,6 +15,11 @@ compatibility: Any OpenAI-compatible agent with x402 payment support; MCP client
 ---
 
 # BridgeNode
+
+## ⚠️ Cost Warning (read first)
+
+This skill **spends real money (USDC)** on every request via on-chain Solana USDC micropayments (x402). There are no refunds once the provider has responded. Check live prices at `GET /v1/models` before use, set `max_tokens` to control cost, and use client-side spending limits (`BRIDGENODE_MAX_PER_CALL`, `BRIDGENODE_DAILY_CAP`) if available.
+
 
 BridgeNode is an AI inference bridge. Agents get an OpenAI-compatible endpoint and pay per request with Solana USDC via the x402 protocol. No API keys, no registration, no subscriptions. Transaction fees (SOL) are sponsored by BridgeNode — the agent only needs USDC in its wallet.
 

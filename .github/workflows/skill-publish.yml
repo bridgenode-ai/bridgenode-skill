@@ -1,0 +1,16 @@
+name: Publish Skill to ClawHub
+
+on:
+  push:
+    branches: [main]
+    paths: ['SKILL.md', '.github/workflows/skill-publish.yml']
+
+jobs:
+  publish:
+    uses: openclaw/clawhub/.github/workflows/skill-publish.yml@main
+    with:
+      skill_path: "."
+      dry_run: false
+      owner: bridgenode
+    secrets:
+      clawhub_token: ${{ secrets.CLAWHUB_TOKEN }}
