@@ -135,6 +135,7 @@ All SDKs handle the x402 payment handshake automatically (402 → sign → retry
 
 ## MCP Usage
 
+- One-line install: `claude mcp add bridgenode -s user -- npx -y @bridgenode/mcp@latest`
 - Server URL: `https://bridgenode.cc/mcp` (streamable-http)
 - Tool: `chat_completions` (model, mode, messages, max_tokens)
 - Payment: x402 handshake per tool call; prices are annotated in `tools/list` (`x-x402`) as an indication — always check the actual amount in the 402 response before signing.
