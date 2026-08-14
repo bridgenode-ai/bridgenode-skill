@@ -46,6 +46,21 @@ Transport: streamable-http
 4. Server settles, runs inference, returns the completion with
    `_meta["x402/payment-response"]` (settlement receipt).
 
+## Expected output (`tools/list`)
+
+```json
+{"result":{"tools":[{"name":"chat_completions","title":"Chat completions with x402 payment","description":"Send a chat completion request to any supported model. Paid tool: x402 payment (Solana USDC) is required — the first call returns 402 with the exact price; retry with _meta[\"x402/payment\"]. ...","inputSchema":{...},"x-x402":{"scheme":"exact","network":"solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp","amount":"2000","asset":"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","payTo":"<BridgeNode wallet>"}}]}}
+```
+
+- The `x-x402` amount is **indicative** (floor); the exact amount is in the 402 response — always check it before signing.
+
+## Troubleshooting
+
+- **`tools/call` returns payment required** — expected on the first call; that is the x402 challenge, not an error.
+- **Client can't connect** — use the one-command wrapper (`npx -y @bridgenode/mcp@latest`) or point the client at `https://bridgenode.cc/mcp` with `streamable-http`.
+- **`503 Service busy`** — retry with backoff.
+- **Empty answer from reasoning models** — use `max_tokens >= 200`.
+
 ## Notes
 
 - Solana mainnet, real USDC. Minimum charge: $0.002 per request.
