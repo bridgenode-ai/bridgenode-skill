@@ -1,10 +1,10 @@
 ---
 name: bridgenode
-version: 1.0.11
+version: 1.0.13
 description: BridgeNode — anonymous pay-per-request LLM inference for AI agents. OpenAI-compatible endpoint + MCP access. No API keys, registration, or subscriptions; no accounts, no personal data. Accepts Solana USDC micropayments via x402 (HTTP 402); fees sponsored, agents need only USDC. Use when an agent lacks a provider API key or wants privacy-preserving pay-per-request pricing.
 metadata:
   author: BridgeNode
-  version: "1.0.11"
+  version: "1.0.13"
   url: https://bridgenode.cc
   repository: https://github.com/applefanaimail-blip/bridgenode-skill
   network: solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp
