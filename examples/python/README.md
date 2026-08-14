@@ -6,7 +6,7 @@ x402 Python SDK (`x402[svm,httpx]`).
 ## Setup
 
 ```bash
-pip install "x402[svm,httpx]" python-dotenv
+pip install "x402[svm,httpx]" "solana==0.39.0" python-dotenv
 cp .env.example .env
 # fill SVM_PRIVATE_KEY (agent's Solana keypair, must have USDC ATA)
 ```
