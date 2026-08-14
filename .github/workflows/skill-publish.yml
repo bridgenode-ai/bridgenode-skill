@@ -18,4 +18,4 @@ jobs:
           node-version: 22
       - run: npm i -g clawhub
       - run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
-      - run: clawhub skill publish . --slug bridgenode --owner bridgenode --categories finance,integrations --topics x402,solana,usdc,mcp,llm
+      - run: clawhub skill publish . --slug bridgenode --owner bridgenode --name "BridgeNode — x402 pay-per-request LLM inference for AI agents (Solana USDC)" --categories finance,integrations --topics x402,solana,usdc,mcp,llm
