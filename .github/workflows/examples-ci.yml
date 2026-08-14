@@ -1,0 +1,84 @@
+name: Examples CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['examples/**', '.github/workflows/examples-ci.yml']
+  pull_request:
+    branches: [main]
+    paths: ['examples/**', '.github/workflows/examples-ci.yml']
+  workflow_dispatch:
+
+concurrency:
+  group: examples-ci
+  cancel-in-progress: true
+
+jobs:
+  examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Python — syntax check
+        run: python -m py_compile examples/python/main.py
+
+      - name: Python — install buyer deps
+        run: pip install "x402[svm]" python-dotenv
+
+      - name: Python — missing-key guardrail (fail-closed)
+        run: |
+          set +e
+          output=$(cd examples/python && python main.py 2>&1)
+          code=$?
+          echo "$output"
+          if [ $code -eq 0 ]; then
+            echo "::error::expected non-zero exit without SVM_PRIVATE_KEY"
+            exit 1
+          fi
+          echo "$output" | grep -q "SVM_PRIVATE_KEY missing" || {
+            echo "::error::expected 'SVM_PRIVATE_KEY missing' message"
+            exit 1
+          }
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: TypeScript — install + typecheck
+        run: |
+          cd examples/typescript
+          npm ci --no-audit --no-fund
+          npx tsc --noEmit
+
+      - name: Smoke — GET /v1/models (free, live)
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" https://bridgenode.cc/v1/models)
+          [ "$code" = "200" ] || { echo "::error::expected 200, got $code"; exit 1; }
+
+      - name: Smoke — chat completions → 402 (live, no payment)
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" \
+              -H "Content-Type: application/json" \
+              -d '{"model":"deepseek-v4-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":100}' \
+              https://bridgenode.cc/v1/chat/completions)
+            [ "$code" = "402" ] && exit 0
+            [ "$code" = "429" ] && { echo "rate-limited, retry $i"; sleep 10; continue; }
+            echo "::error::expected 402, got $code"
+            exit 1
+          done
+          echo "::error::rate-limited after retries"
+          exit 1
+
+      - name: Smoke — MCP tools/list (free, live)
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST -H "Content-Type: application/json" \
+            -H "Accept: application/json, text/event-stream" \
+            -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \
+            https://bridgenode.cc/mcp)
+          [ "$code" = "200" ] || { echo "::error::expected 200, got $code"; exit 1; }
