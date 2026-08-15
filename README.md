@@ -13,13 +13,40 @@ Agent skill and buyer-side examples for [BridgeNode](https://bridgenode.cc) — 
 
 > This repository contains only the **public agent skill and usage examples**. No server code.
 
+## Why BridgeNode
+
+| | BridgeNode | API keys (OpenAI etc.) | Other x402 gateways |
+|---|---|---|---|
+| **Setup** | None — pay per request | Sign up, billing, keys | Varies |
+| **Auth** | x402 on-chain payment | API key (secret management) | x402 (some require third-party facilitators) |
+| **Gas** | Sponsored — agent needs no SOL | — | Often agent pays gas |
+| **Models** | DeepSeek, Groq — one endpoint | One provider each | Varies |
+| **Refunds** | Full refund on provider failure | Credit-based | Varies |
+| **Discovery** | `/v1/models` live pricing | Fixed plans | Varies |
+
+## Quick start
+
+```bash
+# Install the skill (teaches any agent how to pay & call)
+npx skills add applefanaimail-blip/bridgenode-skill
+```
+
+```bash
+# Or use the SDKs
+pip install bridgenode-llm        # Python
+npm i @bridgenode/llm             # TypeScript
+npm i -g @bridgenode/mcp          # MCP server (automatic x402 payments)
+```
+
+The x402 flow is automatic in the SDKs: the first request gets a `402` with payment requirements, the agent signs a USDC transfer (fees sponsored), and the request completes as a normal OpenAI-compatible response. See `examples/` for curl, Python, TypeScript, and MCP walkthroughs.
+
 ## Install the skill
+
+The skill teaches AI agents how to use BridgeNode: endpoints, models, pricing, and the x402 payment flow.
 
 ```bash
 npx skills add applefanaimail-blip/bridgenode-skill
 ```
-
-The skill teaches AI agents how to use BridgeNode: endpoints, models, pricing, and the x402 payment flow.
 
 ## Install the SDKs
 
