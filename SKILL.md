@@ -166,6 +166,7 @@ All errors use the OpenAI error format: `{"error": {"message": ..., "type": ...,
 - Listed on x402-list: https://x402-list.com/services/bridgenode
 - Listed on x402-dev: https://www.x402dev.com/awesome-projects/
 - Listed on nohumans.directory: https://nohumans.directory/l/f1f74751-9d5
+- Listed on gold-402: https://github.com/Haustorium12/gold-402/blob/main/directory/learning.md
 - ClawHub skill: https://clawhub.ai/bridgenode/skills/bridgenode
 - Transaction fees are sponsored (gasless) — the agent only needs USDC in its own wallet.
 - Refunds: if the provider fails before any content is delivered, the payment is refunded automatically (reverse USDC transfer).
