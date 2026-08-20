@@ -9,7 +9,7 @@ buyer-side examples only. **No server code lives here.**
 - OpenAI-compatible chat completions endpoint: `https://bridgenode.cc/v1/chat/completions`
 - Payment: **Solana USDC via x402** (HTTP 402 flow). No API keys, no registration.
 - Pricing: live at `https://bridgenode.cc/v1/models` — always read prices from there.
-- Models: `deepseek-v4-flash`, `deepseek-v4-pro`, `groq-llama-3.3-70b` (or `mode: auto|eco|premium`).
+- Models: see the live list at `https://bridgenode.cc/v1/models` (or use `mode: auto|eco|premium`).
 
 ## How an agent pays (x402 flow, 4 steps)
 
