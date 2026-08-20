@@ -1,7 +1,7 @@
 ---
 name: bridgenode
 version: 1.0.13
-description: BridgeNode — anonymous pay-per-request LLM inference for AI agents without API keys or registration. OpenAI-compatible chat completions endpoint + MCP access for agents that need a model provider but have no key. Solana USDC micropayments via x402 (HTTP 402); transaction fees sponsored, agents need only USDC. Privacy-preserving, pay-as-you-go, no accounts, no personal data, no subscriptions. Use when an agent lacks a provider API key or wants privacy-preserving per-request AI inference pricing.
+description: BridgeNode — x402 pay-per-request AI inference. OpenAI-compatible API + MCP server, Solana USDC, gas-free micropayments. No API keys. Free models included. Live prices: bridgenode.cc/v1/models. Use when an agent lacks a provider API key or wants privacy-preserving per-request AI inference pricing.
 metadata:
   author: BridgeNode
   version: "1.0.13"
