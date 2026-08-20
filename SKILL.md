@@ -49,13 +49,11 @@ BridgeNode is an AI inference bridge. Agents get an OpenAI-compatible endpoint a
 
 ## Models & Pricing
 
-Prices are in USDC per token (6 decimals). Always fetch live prices from `GET /v1/models` — they are the single source of truth and are generated from server config.
+Prices are in USDC per token (6 decimals). Always fetch live prices from `GET /v1/models` — they are the single source of truth and are generated from server config (never hardcoded here — stale prices cost money).
 
-| Model | Input / token | Output / token | Context window | Max output |
-|---|---|---|---|---|
-| `deepseek-v4-flash` | $0.00000020 | $0.00000040 | 1,048,576 | 8,192 |
-| `deepseek-v4-pro` | $0.00000050 | $0.00000100 | 1,048,576 | 8,192 |
-| `groq-llama-3.3-70b` | $0.00000079 | $0.00000099 | 131,072 | 32,768 |
+**🆓 Free models (no payment, no API key, no registration):** `gpt-oss-20b` · `gpt-oss-120b` · `glm-4.7-flash` · `glm-4.5-flash` · `glm-4.6v-flash` (vision).
+
+**Paid models (pay-per-request):** 29 eco + 4 premium — DeepSeek, GLM (Z.AI), Kimi (Moonshot), MiniMax. Full list with live prices: `GET https://bridgenode.cc/v1/models`.
 
 Pricing model: **exact scheme** — the agent pays for `input tokens + max_tokens` **before** processing. If the model generates fewer than `max_tokens`, the agent still pays for `max_tokens` (this is the business model, not a bug). Minimum charge per request: 2000 atomic units = $0.002 USDC.
 
