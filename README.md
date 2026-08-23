@@ -5,6 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/@bridgenode/llm.svg)](https://www.npmjs.com/package/@bridgenode/llm)
 [![npm version](https://img.shields.io/npm/v/@bridgenode/mcp.svg)](https://www.npmjs.com/package/@bridgenode/mcp)
 [![License: MIT-0](https://img.shields.io/badge/License-MIT--0-yellow.svg)](https://opensource.org/license/mit-0/)
+[![CI](https://img.shields.io/github/actions/workflow/status/bridgenode-ai/bridgenode-skill/ci.yml)](https://github.com/bridgenode-ai/bridgenode-skill/actions)
 [![BridgeNode on x402-list](https://x402-list.com/badge/bridgenode.svg)](https://x402-list.com/services/bridgenode?utm_source=badge&utm_medium=referral&utm_campaign=embed)
 [![BridgeNode uptime on x402-list](https://x402-list.com/badge/bridgenode.svg?data=uptime)](https://x402-list.com/services/bridgenode?utm_source=badge&utm_medium=referral&utm_campaign=embed)
 [![BridgeNode on ClawHub](https://img.shields.io/badge/ClawHub-Skill-blue)](https://clawhub.ai/bridgenode/skills/bridgenode)
