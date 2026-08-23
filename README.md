@@ -28,7 +28,7 @@ Agent skill and buyer-side examples for [BridgeNode](https://bridgenode.cc) — 
 
 ```bash
 # Install the skill (teaches any agent how to pay & call)
-npx skills add applefanaimail-blip/bridgenode-skill
+npx skills add bridgenode-ai/bridgenode-skill
 ```
 
 ```bash
@@ -45,7 +45,7 @@ The x402 flow is automatic in the SDKs: the first request gets a `402` with paym
 The skill teaches AI agents how to use BridgeNode: endpoints, models, pricing, and the x402 payment flow.
 
 ```bash
-npx skills add applefanaimail-blip/bridgenode-skill
+npx skills add bridgenode-ai/bridgenode-skill
 ```
 
 ## Install the SDKs

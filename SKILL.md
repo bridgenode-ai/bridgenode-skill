@@ -6,7 +6,7 @@ metadata:
   author: BridgeNode
   version: "1.0.13"
   url: https://bridgenode.cc
-  repository: https://github.com/applefanaimail-blip/bridgenode-skill
+  repository: https://github.com/bridgenode-ai/bridgenode-skill
   network: solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp
   currency: USDC
   openclaw:
