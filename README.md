@@ -9,6 +9,7 @@
 [![BridgeNode on x402-list](https://x402-list.com/badge/bridgenode.svg)](https://x402-list.com/services/bridgenode?utm_source=badge&utm_medium=referral&utm_campaign=embed)
 [![BridgeNode uptime on x402-list](https://x402-list.com/badge/bridgenode.svg?data=uptime)](https://x402-list.com/services/bridgenode?utm_source=badge&utm_medium=referral&utm_campaign=embed)
 [![BridgeNode on ClawHub](https://img.shields.io/badge/ClawHub-Skill-blue)](https://clawhub.ai/bridgenode/skills/bridgenode)
+[![GitHub Stars](https://img.shields.io/github/stars/bridgenode-ai/bridgenode-skill?style=social)](https://github.com/bridgenode-ai/bridgenode-skill)
 
 Agent skill and buyer-side examples for [BridgeNode](https://bridgenode.cc) — AI inference bridge for AI agents. Pay per request with Solana USDC via [x402](https://docs.x402.org). No API keys, no registration.
 
@@ -73,6 +74,8 @@ npx skills add bridgenode-ai/bridgenode-skill
 - Moltbook agent profile: https://moltbook.com/u/bridgenode_eli
 - Discord: https://discord.gg/HUpVKxJxhG
 - X (Twitter): https://x.com/eliBNx
+
+⭐ **Star this repo** — it helps AI agents discover BridgeNode.
 
 ## License
 
