@@ -53,7 +53,7 @@ Prices are in USDC per token (6 decimals). Always fetch live prices from `GET /v
 
 **🆓 Free models (no payment, no API key, no registration):** `gpt-oss-20b` · `gpt-oss-120b` · `glm-4.7-flash` · `glm-4.5-flash` · `glm-4.6v-flash` (vision).
 
-**Paid models (pay-per-request):** 31 models — DeepSeek, GLM (Z.AI), Kimi (Moonshot), MiniMax. Full list with live prices: `GET https://bridgenode.cc/v1/models`.
+**Paid models (pay-per-request):** DeepSeek, GLM (Z.AI), Kimi (Moonshot), MiniMax. Full list with live prices: `GET https://bridgenode.cc/v1/models`.
 
 Pricing model: **exact scheme** — the agent pays for `input tokens + max_tokens` **before** processing. If the model generates fewer than `max_tokens`, the agent still pays for `max_tokens` (this is the business model, not a bug). Minimum charge per request: 2000 atomic units = $0.002 USDC.
 
