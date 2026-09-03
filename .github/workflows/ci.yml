@@ -18,5 +18,36 @@ jobs:
           python-version: "3.12"
       - name: Validate SKILL.md exists
         run: test -f SKILL.md
+      - name: SKILL.md darna su served (auditas 2026-09-03)
+        run: |
+          python3 - <<'PY'
+          # A2 invariantai (sync su served /skill.md, list.md #19):
+          # - Free/Paid pastraipos BE statinių model ID (jie sentų — 09-01
+          #   pamoka "remove static model count"; vienas šaltinis = /v1/models)
+          # - Discovery nuorodos PILNAIS URL (ne /.well-known/... santrumpos)
+          import sys
+          md = open('SKILL.md').read()
+          errs = []
+          free_line = next((l for l in md.splitlines()
+                            if 'Free models (no payment' in l), '')
+          if not free_line:
+              errs.append('Free models pastraipa nerasta')
+          elif 'gpt-oss' in free_line or 'glm-' in free_line:
+              errs.append('Free pastraipoje statinis model ID sąrašas (sentų) — '
+                          'nuoroda /v1/models vietoj to')
+          disc = next((l for l in md.splitlines()
+                       if l.startswith('- Discovery:')), '')
+          if not disc:
+              errs.append('Discovery eilutė nerasta')
+          elif '/.well-known/mcp.json' in disc and 'https://' not in disc.split(
+                  '/.well-known/mcp.json')[0].rsplit(',', 1)[-1]:
+              errs.append('Discovery URL santrumpomis — pilni https URL')
+          if errs:
+              print('SKILL.md DRIFT:')
+              for e in errs:
+                  print('  ' + e)
+              sys.exit(1)
+          print('OK: SKILL.md darnos invariantai')
+          PY
       - name: Python syntax check
         run: python -m py_compile examples/python/main.py
