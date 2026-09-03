@@ -35,13 +35,15 @@ jobs:
           elif 'gpt-oss' in free_line or 'glm-' in free_line:
               errs.append('Free pastraipoje statinis model ID sąrašas (sentų) — '
                           'nuoroda /v1/models vietoj to')
+          import re as _re
           disc = next((l for l in md.splitlines()
                        if l.startswith('- Discovery:')), '')
           if not disc:
               errs.append('Discovery eilutė nerasta')
-          elif '/.well-known/mcp.json' in disc and 'https://' not in disc.split(
-                  '/.well-known/mcp.json')[0].rsplit(',', 1)[-1]:
-              errs.append('Discovery URL santrumpomis — pilni https URL')
+          else:
+              for _m in _re.finditer(r'`([^`]*/\.well-known/[^`]*)`', disc):
+                  if not _m.group(1).startswith('https://bridgenode.cc/'):
+                      errs.append('Discovery URL santrumpomis: ' + _m.group(1))
           if errs:
               print('SKILL.md DRIFT:')
               for e in errs:
