@@ -51,7 +51,7 @@ BridgeNode is an AI inference bridge. Agents get an OpenAI-compatible endpoint a
 
 Prices are in USDC per token (6 decimals). Always fetch live prices from `GET /v1/models` — they are the single source of truth and are generated from server config (never hardcoded here — stale prices cost money).
 
-**🆓 Free models (no payment, no API key, no registration):** `gpt-oss-20b` · `gpt-oss-120b` · `glm-4.7-flash` · `glm-4.5-flash` · `glm-4.6v-flash` (vision).
+**🆓 Free models (no payment, no API key, no registration) are included** — no 402, no wallet, no gas. Live free list: `GET https://bridgenode.cc/v1/models`.
 
 **Paid models (pay-per-request):** DeepSeek, GLM (Z.AI), Kimi (Moonshot), MiniMax. Full list with live prices: `GET https://bridgenode.cc/v1/models`.
 
@@ -160,7 +160,7 @@ All errors use the OpenAI error format: `{"error": {"message": ..., "type": ...,
 ## Notes
 - Security: ClawHub security audit Pass; VirusTotal scan clean (no engine findings).
 
-- Discovery: `https://bridgenode.cc/.well-known/agent-card.json`, `/.well-known/mcp.json`, `/.well-known/ai-manifest.json`
+- Discovery: `https://bridgenode.cc/.well-known/agent-card.json`, `https://bridgenode.cc/.well-known/mcp.json`, `https://bridgenode.cc/.well-known/ai-manifest.json`
 - Listed on x402-list: https://x402-list.com/services/bridgenode
 - Listed on x402-dev: https://www.x402dev.com/awesome-projects/
 - Listed on nohumans.directory: https://nohumans.directory/l/f1f74751-9d5
