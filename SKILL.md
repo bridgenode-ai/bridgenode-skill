@@ -59,9 +59,10 @@ Pricing model: **exact scheme** — the agent pays for `input tokens + max_token
 
 ## Reasoning Models — Important
 
-- Thinking/reasoning models generate **reasoning tokens that SHARE the `max_tokens` budget** with the answer.
-- Use `max_tokens >= 200` — a too-small limit can be fully consumed by reasoning, producing an **EMPTY answer** (the model returned 200 with no content).
+- Many providers enable thinking/reasoning by default; reasoning tokens **SHARE** the `max_tokens` budget with the answer.
+- Use `max_tokens >= 200` — a too-small limit can be fully consumed by reasoning, producing an **EMPTY answer** (the model returns 200 with no content).
 - **An empty answer is NOT refunded** — the service was provided (the provider returned 200). Increase `max_tokens` and purchase again.
+- Thinking is disabled on: `deepseek-v4-flash`, `deepseek-v4-pro` (these are safe at smaller `max_tokens`). All other models may reason by default — treat `max_tokens < 200` as at-risk.
 - Prefer `stream: true` for long generations (non-stream is capped at 4096).
 - If you use tools with a thinking model: you MUST return `reasoning_content` in the next turn, otherwise the API returns 400.
 
