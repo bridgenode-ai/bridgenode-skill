@@ -1,10 +1,10 @@
 ---
 name: bridgenode
-version: 1.0.13
+version: 1.0.14
 description: BridgeNode — x402 pay-per-request AI inference. OpenAI-compatible API + MCP server, Solana USDC, gas-free micropayments. No API keys. Free models included. Live prices: bridgenode.cc/v1/models. Use when an agent lacks a provider API key or wants privacy-preserving per-request AI inference pricing.
 metadata:
   author: BridgeNode
-  version: "1.0.13"
+  version: "1.0.14"
   url: https://bridgenode.cc
   repository: https://github.com/bridgenode-ai/bridgenode-skill
   network: solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp
@@ -22,9 +22,17 @@ compatibility: Any OpenAI-compatible agent with x402 payment support; MCP client
 BridgeNode is an AI inference service for agents: anonymous LLM access without API keys, without registration, without subscriptions. Agents get an OpenAI-compatible chat completions endpoint and pay as they go with Solana USDC micropayments via the x402 payment protocol (HTTP 402). Model prices are published per token on the public models endpoint; transaction fees are sponsored, so an agent only needs USDC in its own wallet. Works with any OpenAI-compatible agent, MCP clients, and x402-capable SDKs.
 
 
+## Free access (start here — no payment, no wallet)
+
+- **Free models** are served without payment: no 402, no wallet, no gas. Same endpoint, same request body — the live list is `GET https://bridgenode.cc/v1/models`, where each free model carries `"free": true` (never hardcode the list here: it changes).
+- **Free trials:** a client that has never called us gets **2 free calls on PAID models** without payment — real inference from a real model before any wallet exists. The remaining count travels in the response headers (`X-Bridgenode-Free-Trials-Remaining`).
+- When the trials are used up, the third call returns **402** with a machine-readable offer in `extensions.bridgenode` (free models, trials left, `how_to_pay`, `docs`) — not a dead end.
+This applies to every transport: HTTP (`https://bridgenode.cc/v1`), MCP (`https://bridgenode.cc/mcp`) and the SDKs — no wallet key is needed for the free path.
+
+
 ## ⚠️ Cost Warning (read first)
 
-This skill **spends real money (USDC)** on every request via on-chain Solana USDC micropayments (x402). There are no refunds once the provider has responded. Check live prices at `GET /v1/models` before use, set `max_tokens` to control cost, and use client-side spending limits (`BRIDGENODE_MAX_PER_CALL`, `BRIDGENODE_DAILY_CAP`) if available.
+This skill **spends real money (USDC)** on PAID requests via on-chain Solana USDC micropayments (x402). There are no refunds once the provider has responded. Check live prices at `GET /v1/models` before use, set `max_tokens` to control cost, and use client-side spending limits (`BRIDGENODE_MAX_PER_CALL`, `BRIDGENODE_DAILY_CAP`) if available. Free models and the free trials never spend anything.
 
 
 BridgeNode is an AI inference bridge. Agents get an OpenAI-compatible endpoint and pay per request with Solana USDC via the x402 protocol. No API keys, no registration, no subscriptions. Transaction fees (SOL) are sponsored by BridgeNode — the agent only needs USDC in its wallet.
@@ -33,6 +41,7 @@ BridgeNode is an AI inference bridge. Agents get an OpenAI-compatible endpoint a
 
 - The agent needs LLM inference (chat completions) but has no provider API key.
 - Pay-per-request is preferred over monthly subscriptions.
+- **The agent has no wallet yet** — free models and the free trials work without payment (start there).
 - The agent has a Solana wallet with USDC (or can receive it) and supports x402 payments.
 - Deterministic, transparent per-request pricing is required.
 - MCP-based agents that need a paid inference tool.
@@ -62,7 +71,7 @@ Pricing model: **exact scheme** — the agent pays for `input tokens + max_token
 - Many providers enable thinking/reasoning by default; reasoning tokens **SHARE** the `max_tokens` budget with the answer.
 - Use `max_tokens >= 200` — a too-small limit can be fully consumed by reasoning, producing an **EMPTY answer** (the model returns 200 with no content).
 - **An empty answer is NOT refunded** — the service was provided (the provider returned 200). Increase `max_tokens` and purchase again.
-- Thinking is disabled on: `deepseek-v4-flash`, `deepseek-v4-pro` (these are safe at smaller `max_tokens`). All other models may reason by default — treat `max_tokens < 200` as at-risk.
+- Thinking is disabled on: `deepseek-flash`, `deepseek-v4-pro` (these are safe at smaller `max_tokens`). All other models may reason by default — treat `max_tokens < 200` as at-risk.
 - Prefer `stream: true` for long generations (non-stream is capped at 4096).
 - If you use tools with a thinking model: you MUST return `reasoning_content` in the next turn, otherwise the API returns 400.
 
@@ -98,7 +107,7 @@ Step 1 — get payment requirements:
 ```bash
 curl https://bridgenode.cc/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -d '{"model":"deepseek-v4-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":100}'
+  -d '{"model":"deepseek-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":100}'
 ```
 
 Response: `402` with `PAYMENT-REQUIRED` header (amount, payTo, memo).
@@ -109,7 +118,7 @@ Step 2 — sign the partial transaction with an x402-capable client (e.g. `x402-
 curl https://bridgenode.cc/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "PAYMENT-SIGNATURE: <base64 payload>" \
-  -d '{"model":"deepseek-v4-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":100}'
+  -d '{"model":"deepseek-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":100}'
 ```
 
 Response: `200` with the completion and `PAYMENT-RESPONSE` header.
@@ -141,7 +150,7 @@ All SDKs handle the x402 payment handshake automatically (402 → sign → retry
 
 ## Request Options
 
-- `model`: explicit model ID from `/v1/models` (e.g. `deepseek-v4-flash`).
+- `model`: explicit model ID from `/v1/models` (e.g. `deepseek-flash`).
 - `mode`: smart routing — `auto` (complexity-based tier), `eco` (cheapest), `premium` (best). If both `model` and `mode` are sent, `model` wins.
 - `max_tokens`: request cap (default 4096, clamped to model max). Non-stream requests are capped at 4096 — use `stream: true` for longer generations.
 - `stream`: SSE streaming supported (`stream: true`).
