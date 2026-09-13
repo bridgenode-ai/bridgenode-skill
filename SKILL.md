@@ -66,6 +66,16 @@ Prices are in USDC per token (6 decimals). Always fetch live prices from `GET /v
 
 Pricing model: **exact scheme** — the agent pays for `input tokens + max_tokens` **before** processing. If the model generates fewer than `max_tokens`, the agent still pays for `max_tokens` (this is the business model, not a bug). Minimum charge per request: 2000 atomic units = $0.002 USDC.
 
+## Tool Calling (function calling)
+
+Send OpenAI-style `tools` (+ optional `tool_choice`) — they are forwarded to the model **unchanged** (free and paid models, HTTP and MCP, streaming and non-streaming). The answer is the provider's own: text, or `choices[0].message.tool_calls` with `finish_reason: "tool_calls"`.
+
+Continue like any OpenAI client: send the assistant turn back with **`content: null` and its `tool_calls`**, then one `role: "tool"` message per call with `tool_call_id`. (A tool-call turn has no text content — that is normal, not an error.)
+
+- The **tool schema counts as input tokens** — it is priced and context-checked like your messages. Trim descriptions you do not need.
+- **Free models have a small token budget**: a large tool list will not fit. Use a paid model for agentic loops.
+- A model marked `"tools": true` in `GET https://bridgenode.cc/v1/models` is verified to accept tool calling; no such field means *unverified*, not necessarily unsupported.
+
 ## Reasoning Models — Important
 
 - Many providers enable thinking/reasoning by default; reasoning tokens **SHARE** the `max_tokens` budget with the answer.
@@ -154,6 +164,8 @@ All SDKs handle the x402 payment handshake automatically (402 → sign → retry
 - `mode`: smart routing — `auto` (complexity-based tier), `eco` (cheapest), `premium` (best). If both `model` and `mode` are sent, `model` wins.
 - `max_tokens`: request cap (default 4096, clamped to model max). Non-stream requests are capped at 4096 — use `stream: true` for longer generations.
 - `stream`: SSE streaming supported (`stream: true`).
+- `tools`: OpenAI-style function definitions the model may call (forwarded unchanged; the schema counts as input tokens — see Tool Calling above).
+- `tool_choice`: `auto` / `none` / `required`, or a forced function object.
 
 ## Errors
 
