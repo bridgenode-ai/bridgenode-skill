@@ -1,7 +1,7 @@
 ---
 name: bridgenode
 version: 1.0.14
-description: BridgeNode — x402 pay-per-request AI inference. OpenAI-compatible API + MCP server, Solana USDC, gas-free micropayments. No API keys. Free models included. Live prices: bridgenode.cc/v1/models. Use when an agent lacks a provider API key or wants privacy-preserving per-request AI inference pricing.
+description: BridgeNode — x402 pay-per-request AI inference for agents. OpenAI-compatible API + MCP server with tool calling, Solana USDC, gas-free micropayments. No API keys. Free models included. Live prices: bridgenode.cc/v1/models Use when an agent lacks a provider API key or wants privacy-preserving per-request AI inference pricing.
 metadata:
   author: BridgeNode
   version: "1.0.14"
@@ -70,7 +70,7 @@ Pricing model: **exact scheme** — the agent pays for `input tokens + max_token
 
 Send OpenAI-style `tools` (+ optional `tool_choice`) — they are forwarded to the model **unchanged** (free and paid models, HTTP and MCP, streaming and non-streaming). The answer is the provider's own: text, or `choices[0].message.tool_calls` with `finish_reason: "tool_calls"`.
 
-Continue like any OpenAI client: send the assistant turn back with **`content: null` and its `tool_calls`**, then one `role: "tool"` message per call with `tool_call_id`. (A tool-call turn has no text content — that is normal, not an error.)
+Continue like any OpenAI client: send the assistant turn back with **`content: null` and its `tool_calls`**, then one `role: "tool"` message per call with `tool_call_id`.
 
 - The **tool schema counts as input tokens** — it is priced and context-checked like your messages. Trim descriptions you do not need.
 - **Free models have a small token budget**: a large tool list will not fit. Use a paid model for agentic loops.
