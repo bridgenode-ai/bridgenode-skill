@@ -1,10 +1,10 @@
 ---
 name: bridgenode
-version: 1.0.14
+version: 1.0.15
 description: BridgeNode — x402 pay-per-request AI inference for agents. OpenAI-compatible API + MCP server with tool calling, Solana USDC, gas-free micropayments. No API keys. Free models included. Live prices: bridgenode.cc/v1/models Use when an agent lacks a provider API key or wants privacy-preserving per-request AI inference pricing.
 metadata:
   author: BridgeNode
-  version: "1.0.14"
+  version: "1.0.15"
   url: https://bridgenode.cc
   repository: https://github.com/bridgenode-ai/bridgenode-skill
   network: solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp
@@ -24,9 +24,16 @@ BridgeNode is an AI inference service for agents: anonymous LLM access without A
 
 ## Free access (start here — no payment, no wallet)
 
-- **Free models** are served without payment: no 402, no wallet, no gas. Same endpoint, same request body — the live list is `GET https://bridgenode.cc/v1/models`, where each free model carries `"free": true` (never hardcode the list here: it changes).
+- **Free models** (`gpt-oss-20b, gpt-oss-120b, glm-4.7-flash, glm-4.5-flash, glm-4.6v-flash`) are served without payment: no 402, no wallet, no gas. Same endpoint, same request body.
+
+**Free model notes (read before choosing one):**
+- `glm-4.7-flash` — ⚠️ **temporarily unreliable**: z.ai free model: slower than the Groq free models — a reply can take up to a minute, and the provider is sometimes overloaded. If it returns an error (rate limit / temporarily overloaded), retry once or switch to gpt-oss-20b, the most reliable free model.
+- `glm-4.5-flash` — ⚠️ **temporarily unreliable**: z.ai free model: slower than the Groq free models — a reply can take up to a minute, and the provider is sometimes overloaded. If it returns an error (rate limit / temporarily overloaded), retry once or switch to gpt-oss-20b, the most reliable free model.
+- `glm-4.6v-flash`: z.ai free model: slower than the Groq free models — a reply can take up to a minute, and the provider is sometimes overloaded. If it returns an error (rate limit / temporarily overloaded), retry once or switch to gpt-oss-20b, the most reliable free model.
 - **Free trials:** a client that has never called us gets **2 free calls on PAID models** without payment — real inference from a real model before any wallet exists. The remaining count travels in the response headers (`X-Bridgenode-Free-Trials-Remaining`).
 - When the trials are used up, the third call returns **402** with a machine-readable offer in `extensions.bridgenode` (free models, trials left, `how_to_pay`, `docs`) — not a dead end.
+- Check the live list: `GET https://bridgenode.cc/v1/models` (`"free": true`).
+
 This applies to every transport: HTTP (`https://bridgenode.cc/v1`), MCP (`https://bridgenode.cc/mcp`) and the SDKs — no wallet key is needed for the free path.
 
 
@@ -50,11 +57,6 @@ BridgeNode is an AI inference bridge. Agents get an OpenAI-compatible endpoint a
 
 | Endpoint | Purpose |
 |---|---|
-| `https://bridgenode.cc/v1` | OpenAI-compatible API base URL |
-| `https://bridgenode.cc/v1/models` | Public model list + prices (no auth) |
-| `https://bridgenode.cc/v1/chat/completions` | Chat completions (POST) |
-| `https://bridgenode.cc/mcp` | MCP server (streamable-http) |
-| `https://bridgenode.cc/llms.txt` | Full agent install map |
 
 ## Models & Pricing
 
@@ -64,6 +66,9 @@ Prices are in USDC per token (6 decimals). Always fetch live prices from `GET /v
 
 **Paid models (pay-per-request):** DeepSeek, GLM (Z.AI), Kimi (Moonshot), MiniMax. Full list with live prices: `GET https://bridgenode.cc/v1/models`.
 
+| Model | Input / token | Output / token | Context window | Max output | Tools |
+|---|---|---|---|---|---|
+
 Pricing model: **exact scheme** — the agent pays for `input tokens + max_tokens` **before** processing. If the model generates fewer than `max_tokens`, the agent still pays for `max_tokens` (this is the business model, not a bug). Minimum charge per request: 2000 atomic units = $0.002 USDC.
 
 ## Tool Calling (function calling)
@@ -72,16 +77,16 @@ Send OpenAI-style `tools` (+ optional `tool_choice`) — they are forwarded to t
 
 Continue like any OpenAI client: send the assistant turn back with **`content: null` and its `tool_calls`**, then one `role: "tool"` message per call with `tool_call_id`.
 
-- The **tool schema counts as input tokens** — it is priced and context-checked like your messages. Trim descriptions you do not need.
-- **Free models have a small token budget**: a large tool list will not fit. Use a paid model for agentic loops.
-- A model marked `"tools": true` in `GET https://bridgenode.cc/v1/models` is verified to accept tool calling; no such field means *unverified*, not necessarily unsupported.
+- The **tool schema counts as input tokens** — it is priced and context-checked like your messages.
+- **Free models have a small token budget** (see the table above); a large tool list will not fit. Use a paid model for agentic loops.
+- The `Tools` column marks models verified to accept tool calling. Unmarked = unverified, not necessarily unsupported.
 
 ## Reasoning Models — Important
 
 - Many providers enable thinking/reasoning by default; reasoning tokens **SHARE** the `max_tokens` budget with the answer.
 - Use `max_tokens >= 200` — a too-small limit can be fully consumed by reasoning, producing an **EMPTY answer** (the model returns 200 with no content).
-- **An empty answer is NOT refunded** — the service was provided (the provider returned 200). Increase `max_tokens` and purchase again.
-- Thinking is disabled on: `deepseek-flash`, `deepseek-v4-pro` (these are safe at smaller `max_tokens`). All other models may reason by default — treat `max_tokens < 200` as at-risk.
+- **An empty answer is retried and refunded**: we retry once automatically with a bigger budget; if the answer is still empty you get an error with the reason and a FULL refund — you never pay for an answer you did not receive.
+- Thinking is disabled on: `glm-4.7-flash`, `deepseek-flash`, `deepseek-v4-pro` (these are safe at smaller `max_tokens`). All other models may reason by default — treat `max_tokens < 200` as at-risk.
 - Prefer `stream: true` for long generations (non-stream is capped at 4096).
 - If you use tools with a thinking model: you MUST return `reasoning_content` in the next turn, otherwise the API returns 400.
 
@@ -112,12 +117,24 @@ Key details:
 
 ## Quick Start (curl)
 
-Step 1 — get payment requirements:
+Step 0 — first call, free (copy this one): the leading free model answers
+without payment and without a wallet. Keep `max_tokens >= 200` — a smaller
+limit can be consumed by reasoning and return an EMPTY answer.
 
 ```bash
 curl https://bridgenode.cc/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -d '{"model":"deepseek-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":100}'
+  -d '{"model":"gpt-oss-20b","messages":[{"role":"user","content":"hello"}],"max_tokens":200}'
+```
+
+Response: `200` directly — no `402`, no `PAYMENT-REQUIRED`.
+
+Step 1 — get payment requirements for a PAID model:
+
+```bash
+curl https://bridgenode.cc/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"deepseek-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":200}'
 ```
 
 Response: `402` with `PAYMENT-REQUIRED` header (amount, payTo, memo).
@@ -128,7 +145,7 @@ Step 2 — sign the partial transaction with an x402-capable client (e.g. `x402-
 curl https://bridgenode.cc/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "PAYMENT-SIGNATURE: <base64 payload>" \
-  -d '{"model":"deepseek-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":100}'
+  -d '{"model":"deepseek-flash","messages":[{"role":"user","content":"hello"}],"max_tokens":200}'
 ```
 
 Response: `200` with the completion and `PAYMENT-RESPONSE` header.
@@ -162,7 +179,7 @@ All SDKs handle the x402 payment handshake automatically (402 → sign → retry
 
 - `model`: explicit model ID from `/v1/models` (e.g. `deepseek-flash`).
 - `mode`: smart routing — `auto` (complexity-based tier), `eco` (cheapest), `premium` (best). If both `model` and `mode` are sent, `model` wins.
-- `max_tokens`: request cap (default 4096, clamped to model max). Non-stream requests are capped at 4096 — use `stream: true` for longer generations.
+- `max_tokens`: request cap (default 4096, clamped to model max). A non-stream request above `non_stream_max_tokens` (published per model in `/v1/models`) is clamped to it, never rejected — use `stream: true` for longer generations.
 - `stream`: SSE streaming supported (`stream: true`).
 - `tools`: OpenAI-style function definitions the model may call (forwarded unchanged; the schema counts as input tokens — see Tool Calling above).
 - `tool_choice`: `auto` / `none` / `required`, or a forced function object.
@@ -190,3 +207,14 @@ All errors use the OpenAI error format: `{"error": {"message": ..., "type": ...,
 - ClawHub skill: https://clawhub.ai/bridgenode/skills/bridgenode
 - Transaction fees are sponsored (gasless) — the agent only needs USDC in its own wallet.
 - Refunds: if the provider fails before any content is delivered, the payment is refunded automatically (reverse USDC transfer).
+
+## Conformance (x402 v2, `exact`)
+
+Facts you can check, not a badge (fix.md 6.1):
+
+- `x402Version` **2**, scheme **`exact`**, network **`solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp`** (Solana mainnet, CAIP-2).
+- Asset: **USDC** `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v` (6 decimals); `amount` is an **atomic string** (`"2000"` = 0.002 USDC).
+- `payTo` and `extra.feePayer` are the same address — the agent needs **no SOL** (gasless).
+- The 402 body is a `PaymentRequired` envelope, validated against the **official x402 SDK** schemas; the live check passes 17/17 (envelope fields, `/supported`, `/verify` semantics, and a real settlement verified on-chain).
+- **Self-facilitated:** `GET /supported`, `POST /verify`, `POST /settle` are served by BridgeNode itself (declared in `https://bridgenode.cc/.well-known/x402`) — no third party between the agent and us.
+- `/verify` follows the spec: a payment that does not verify is answered **`200 {isValid: false, invalidReason}`**; only a malformed request body is a 400.
