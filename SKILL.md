@@ -1,10 +1,10 @@
 ---
 name: bridgenode
-version: 1.0.15
+version: 1.0.16
 description: BridgeNode — x402 pay-per-request AI inference for agents. OpenAI-compatible API + MCP server with tool calling, Solana USDC, gas-free micropayments. No API keys. Free models included. Live prices: bridgenode.cc/v1/models Use when an agent lacks a provider API key or wants privacy-preserving per-request AI inference pricing.
 metadata:
   author: BridgeNode
-  version: "1.0.15"
+  version: "1.0.16"
   url: https://bridgenode.cc
   repository: https://github.com/bridgenode-ai/bridgenode-skill
   network: solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp
@@ -35,6 +35,16 @@ BridgeNode is an AI inference service for agents: anonymous LLM access without A
 - Check the live list: `GET https://bridgenode.cc/v1/models` (`"free": true`).
 
 This applies to every transport: HTTP (`https://bridgenode.cc/v1`), MCP (`https://bridgenode.cc/mcp`) and the SDKs — no wallet key is needed for the free path.
+
+## Limits (published — counted per client, and enforced exactly like this)
+- **One client =** a wallet with payment history, otherwise your network (/24 IPv4, /64 IPv6).
+- **Free trials:** 2 calls on PAID models (one-off, per client).
+- **Daily free budget:** 200 calls and 100,000 tokens per client per day (FREE MODELS AND TRIALS together, resets 00:00 UTC). Over it → **429** `free_daily_quota_exhausted` with `Retry-After`.
+- **Per free model, our own daily ceiling:** `gpt-oss-120b` 160,000, `gpt-oss-20b` 160,000 tokens/day (shared by all clients). Reached → **429** `free_budget_exhausted` naming a model that still works — we stop before the provider does.
+- **Rate:** 30 free requests/minute per client; 10 payment challenges/minute.
+- **Concurrency:** 20 free calls at once across all clients. Over it → **503** `free_path_busy` + `Retry-After` (never a silent queue).
+- **Every free answer carries the numbers:** `X-Bridgenode-Free-Quota-Limit`, `X-Bridgenode-Free-Quota-Remaining`, `X-Bridgenode-Free-Quota-Reset`, `X-Bridgenode-Free-Quota-Tokens-Limit`, `X-Bridgenode-Free-Quota-Tokens-Remaining`, `X-Bridgenode-Free-Trials-Remaining`.
+- **Paid requests (x402) are never affected by any of these limits** — they neither wait for free traffic nor share its budgets.
 
 
 ## ⚠️ Cost Warning (read first)
