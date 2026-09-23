@@ -37,7 +37,7 @@ BridgeNode is an AI inference service for agents: anonymous LLM access without A
 This applies to every transport: HTTP (`https://bridgenode.cc/v1`), MCP (`https://bridgenode.cc/mcp`) and the SDKs — no wallet key is needed for the free path.
 
 ## Limits (published — counted per client, and enforced exactly like this)
-- **One client =** a wallet with payment history, otherwise your network (/24 IPv4, /64 IPv6).
+- **One client =** a wallet with payment history, otherwise your network (daily budget: /24 IPv4, /64 IPv6; trials: /16 IPv4, /48 IPv6).
 - **Free trials:** 2 calls on PAID models (one-off, per client).
 - **Daily free budget:** 200 calls and 100,000 tokens per client per day (FREE MODELS AND TRIALS together, resets 00:00 UTC). Over it → **429** `free_daily_quota_exhausted` with `Retry-After`.
 - **Per free model, our own daily ceiling:** `gpt-oss-120b` 160,000, `gpt-oss-20b` 160,000 tokens/day (shared by all clients). Reached → **429** `free_budget_exhausted` naming a model that still works — we stop before the provider does.
